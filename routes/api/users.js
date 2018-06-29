@@ -24,21 +24,22 @@ router.get('/test', (req, res) => res.json({message: 'WTF MATE?'}));
 router.post('/register', (req, res) => {
   const {errors, isValid} = validateRegisterInput(req.body);
 
-  //Check validation
+  // Check Validation
   if (!isValid) {
     return res.status(400).json(errors);
   }
 
-  User.findOne({email: req.body.email}).then((user) => {
+  User.findOne({email: req.body.email}).then(user => {
     if (user) {
-      errors.email = "Email already exists"
+      errors.email = 'Email already exists';
       return res.status(400).json(errors);
     } else {
       const avatar = gravatar.url(req.body.email, {
-        s: '200', //size
-        r: 'pg', //rating
-        d: 'mm' //default
+        s: '200', // Size
+        r: 'pg', // Rating
+        d: 'mm' // Default
       });
+
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
@@ -46,7 +47,7 @@ router.post('/register', (req, res) => {
         password: req.body.password
       });
 
-      bcrypt.genSalt(10, (error, salt) => {
+      bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
           newUser.password = hash;
@@ -54,10 +55,10 @@ router.post('/register', (req, res) => {
             .save()
             .then(user => res.json(user))
             .catch(err => console.log(err));
-        })
-      })
+        });
+      });
     }
-  })
+  });
 });
 
 //@route  GET api/users/login
