@@ -1,68 +1,75 @@
-import React, {Component} from 'react'
-import {Link} from "react-router-dom";
-import {PropTypes} from "prop-types";
-import {connect} from "react-redux";
-import RecipeCard from "../common/RecipeCard"
-import {getUserRecipes} from "../../actions/recipes";
-import Spinner from "../common/Spinner";
-import RecipeForm from "../form/RecipeForm";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+import Spinner from '../common/Spinner';
+import {getRecipeByHandle} from '../../actions/recipes';
 
-class MyRecipes extends Component {
-
+class RecipeDetails extends Component {
   componentDidMount() {
-    this.props.getUserRecipes();
+    if (this.props.match.params.handle) {
+      this.props.getRecipeByHandle(this.props.match.params.handle);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.recipe === null && this.recipe.loading) {
+      console.log(nextProps.recipe);
+      this.props.history.push('/not-found');
+    }
   }
 
   render() {
-    const {recipes, loading} = this.props.recipe;
-    const {isAuthenticated} = this.props.auth;
-    let recipesContent;
+    const {recipe, loading} = this.props.recipe;
+    let recipeContent;
 
-    if (recipes === null || loading) {
-      recipesContent = <Spinner/>
+    if (recipe === null || loading) {
+      recipeContent = <Spinner/>;
     } else {
-      recipesContent = <RecipeCard recipes={recipes}/>
-    }
-
-    const addRecipe = (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-12">
-            <RecipeForm/>
-          </div>
-        </div>
-      </div>
-
-    );
-
-    return (
-      <div className="feed">
-        {isAuthenticated ? addRecipe : ''}
-        <div className="container">
+      recipeContent = (
+        <div>
           <div className="row">
+            <div className="col-md-6">
+              <Link to="/recipes" className="btn btn-light mb-3 float-left">
+                Back To Recipes
+              </Link>
+            </div>
+            <div className="col-md-6"/>
             <div className="col-md-12">
-              {recipesContent}
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">{recipe.name}</h5>
+
+                  <h6 className="card-subtitle mb-2 text-muted">{recipe.shortText}</h6>
+                  <p className="card-text">{recipe.ingredients}</p>
+                  <p className="card-text">{recipe.description}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      );
+    }
+
+    return (
+      <div className="profile">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12">{recipeContent}</div>
+          </div>
+        </div>
       </div>
-
-    )
+    );
   }
-
-
 }
 
-MyRecipes.propTypes = {
-  getUserRecipes: PropTypes.func.isRequired,
+RecipeDetails.propTypes = {
+  getRecipeByHandle: PropTypes.func.isRequired,
   recipe: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   recipe: state.recipe,
-  auth: state.auth
 });
 
-
-export default connect(mapStateToProps, {getUserRecipes})(MyRecipes);
+export default connect(mapStateToProps, {getRecipeByHandle})(RecipeDetails);

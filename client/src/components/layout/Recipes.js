@@ -1,11 +1,9 @@
 import React, {Component} from 'react'
-import {Link} from "react-router-dom";
 import {PropTypes} from "prop-types";
 import {connect} from "react-redux";
 import RecipeCard from "../common/RecipeCard"
 import {getRecipes} from "../../actions/recipes";
 import Spinner from "../common/Spinner";
-import RecipeForm from "../form/RecipeForm";
 
 class Recipes extends Component {
 
@@ -15,7 +13,6 @@ class Recipes extends Component {
 
   render() {
     const {recipes, loading} = this.props.recipe;
-    const {isAuthenticated} = this.props.auth;
     let recipesContent;
 
     if (recipes === null || loading) {
@@ -44,12 +41,10 @@ class Recipes extends Component {
 Recipes.propTypes = {
   getRecipes: PropTypes.func.isRequired,
   recipe: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   recipe: state.recipe,
-  auth: state.auth
 });
 
 

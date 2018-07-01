@@ -19,15 +19,10 @@ const RecipeSchema = new Schema({
     type: String,
     required: true
   },
-  ingredients: [{
-    ingredient: {
-      type: Schema.Types.ObjectId,
-      ref: 'ingredients'
-    },
-    quantity: {
-      type: String,
-    }
-  }],
+  ingredients: {
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now()

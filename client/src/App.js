@@ -14,10 +14,13 @@ import Footer from "./components/layout/Footer";
 import Landing from "./components/layout/Landing";
 import Recipes from "./components/layout/Recipes";
 import MyRecipes from "./components/layout/MyRecipes";
+import RecipeDetails from "./components/layout/RecipeDetails";
+import NotFound from './components/not-found/NotFound';
 
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import './App.css';
+
 
 if (localStorage.jwtToken) {
   //Set auth token header
@@ -53,6 +56,8 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path="/myrecipes" component={MyRecipes}/>
               </Switch>
+              <Route exact path="/recipe/:handle" component={RecipeDetails}/>
+              <Route exact path="/not-found" component={NotFound} />
             </div>
             <Footer/>
           </div>

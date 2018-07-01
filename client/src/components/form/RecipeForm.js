@@ -11,7 +11,7 @@ class RecipeForm extends Component {
       name: '',
       shortText: '',
       description: '',
-      ingredients: {},
+      ingredients: '',
       errors: {}
     };
 
@@ -39,7 +39,7 @@ class RecipeForm extends Component {
     };
 
     this.props.addRecipe(newRecipe);
-    this.setState({name: '', shortText: '', description: ''});
+    this.setState({name: '', shortText: '', description: '', ingredients: ''});
   }
 
   onChange(e) {
@@ -69,6 +69,13 @@ class RecipeForm extends Component {
                   type={"text"}
                   onChange={this.onChange}
                   placeholder={"Short text about recipe"}
+                />
+                <TextFieldGroup
+                  name={"ingredients"}
+                  value={this.state.ingredients}
+                  type={"text"}
+                  onChange={this.onChange}
+                  placeholder={"Type ingredients"}
                 />
                 <TextFieldGroup
                   name={"description"}

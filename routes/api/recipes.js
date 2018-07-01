@@ -43,22 +43,41 @@ router.post('/add', passport.authenticate('jwt', {session: false}),
 router.get('/', (req, res) => {
   Recipe.find()
     .populate('user')
-    .sort({ date: -1 })
+    .sort({date: -1})
     .then(recipes => res.json(recipes))
-    .catch(err => res.status(404).json({ norecipesfound: 'No recipes found' }));
+    .catch(err => res.status(404).json({norecipesfound: 'No recipes found'}));
 });
 
 //@route  GET api/recipes/
 //@desc   Get user recipes
 //@access Public
-router.get('/myrecipes',passport.authenticate('jwt', {session: false}),
+router.get('/myrecipes', passport.authenticate('jwt', {session: false}),
   (req, res) => {
-  Recipe.find({user: req.user.id})
-    .populate('user')
-    .sort({ date: -1 })
-    .then(recipes => res.json(recipes))
-    .catch(err => res.status(404).json({ norecipesfound: 'No recipes found' }));
-});
+    Recipe.find({user: req.user.id})
+      .populate('user')
+      .sort({date: -1})
+      .then(recipes => res.json(recipes))
+      .catch(err => res.status(404).json({norecipesfound: 'No recipes found'}));
+  });
+// @route   GET api/recipes/handle/:handle
+// @desc    Get recipe by handle
+// @access  Public
 
+router.get('/recipe/:handle', (req, res) => {
+  const errors = {};
+
+  Recipe.findOne({_id: req.params.handle})
+    .populate('user')
+    .then(recipe => {
+      if (!recipe) {
+        errors.norecipe = 'There is no recipe';
+        res.status(404).json(errors);
+      }
+      res.json(recipe);
+    })
+    .catch(err =>
+      res.status(404).json({norecipe: 'There is no recipe'})
+    );
+});
 
 module.exports = router;

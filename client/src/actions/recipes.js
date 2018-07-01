@@ -5,7 +5,8 @@ import {ADD_RECIPE,
   RECIPES_LOADING,
   GET_ERRORS,
   CLEAR_ERRORS,
-  GET_USER_RECIPES
+  GET_USER_RECIPES,
+  GET_RECIPE
 } from './types';
 
 export const addRecipe = recipeData => dispatch => {
@@ -56,6 +57,25 @@ export const getUserRecipes = () => dispatch => {
         payload: null
       })
     )
+};
+
+// Get recipe by handle
+export const getRecipeByHandle = handle => dispatch => {
+  dispatch(setRecipesLoading());
+  axios
+    .get(`/api/recipes/recipe/${handle}`)
+    .then(res =>
+      dispatch({
+        type: GET_RECIPE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_RECIPE,
+        payload: null
+      })
+    );
 };
 
 export const setRecipesLoading = () => {

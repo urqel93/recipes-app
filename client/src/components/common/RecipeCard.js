@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import classnames from "classnames";
 import PropTypes from "prop-types";
+import {Link} from 'react-router-dom';
 
 class RecipeCard extends Component {
   render() {
@@ -11,9 +11,9 @@ class RecipeCard extends Component {
       <div key={recipe._id} className="card mb-4">
         <h5 className="card-header">{recipe.name}</h5>
         <div className="card-body">
-          <p className="card-text">{recipe.description}</p>
+          <p className="card-subtitle mb-2 text-muted">{recipe.shortText}</p>
           <p className="card-text">{recipe.user.name}</p>
-          <a href="#" className="btn btn-primary">Read recipe...</a>
+          <Link to={`/recipe/${recipe._id}`} className="btn btn-primary">Read recipe...</Link>
         </div>
       </div>
     ));
