@@ -51,8 +51,9 @@ router.get('/', (req, res) => {
 //@route  GET api/recipes/
 //@desc   Get user recipes
 //@access Public
-router.get('/', (req, res) => {
-  Recipe.find()
+router.get('/myrecipes',passport.authenticate('jwt', {session: false}),
+  (req, res) => {
+  Recipe.find({user: req.user.id})
     .populate('user')
     .sort({ date: -1 })
     .then(recipes => res.json(recipes))
