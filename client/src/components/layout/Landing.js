@@ -1,7 +1,15 @@
 import React, {Component} from 'react'
 import {Link} from "react-router-dom";
+import {PropTypes} from "prop-types";
+import {connect} from "react-redux";
 
 class Landing extends Component {
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/recipes');
+    }
+  }
+
   render() {
     return (
       <div className="landing">
@@ -9,12 +17,12 @@ class Landing extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12 text-center">
-                <h1 className="display-3 mb-4">Regler - Twoje przepisy
+                <h1 className="display-3 mb-4">YourRecipe
                 </h1>
-                <p className="lead">Dodawaj swoje przepisy oraz dziel się nimi z innymi!</p>
+                <p className="lead">Add your recipes and share with others</p>
                 <hr/>
-                <Link to="/register" className="btn btn-lg btn-info mr-2">Rejestracja</Link>
-                <Link to="/login" className="btn btn-lg btn-light">Logowanie</Link>
+                <Link to="/register" className="btn btn-lg btn-info mr-2">Sing up</Link>
+                <Link to="/login" className="btn btn-lg btn-light">Login</Link>
               </div>
             </div>
           </div>
@@ -26,4 +34,12 @@ class Landing extends Component {
 
 }
 
-export default Landing;
+Landing.propTypes = {
+  auth: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps)(Landing);
