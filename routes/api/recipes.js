@@ -80,4 +80,28 @@ router.get('/recipe/:handle', (req, res) => {
     );
 });
 
+// @route   DELETE api/recipes/:id
+// @desc    delete recipe
+// @access  Public
+router.delete('/:id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    User.findOne({ user: req.user.id }).then(user => {
+      Recipe.findById(req.params.id)
+        .then(recipe => {
+          // Check for post owner
+          if (recipe.user.toString() !== req.user.id) {
+            return res
+              .status(401)
+              .json({ notauthorized: 'User not authorized' });
+          }
+
+          // Delete
+          recipe.remove().then(() => res.json({ success: true }));
+        })
+        .catch(err => res.status(404).json({ recipenorfound: 'No recipe found' }));
+    });
+  }
+);
+
 module.exports = router;

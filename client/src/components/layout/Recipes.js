@@ -15,8 +15,10 @@ class Recipes extends Component {
     const {recipes, loading} = this.props.recipe;
     let recipesContent;
 
-    if (recipes === null || loading) {
+    if (recipes === null && loading) {
       recipesContent = <Spinner/>
+    }else if (recipes.length === 0) {
+      recipesContent = <h1>No recipes found</h1>
     } else {
       recipesContent = <RecipeCard recipes={recipes}/>
     }
