@@ -11,6 +11,10 @@ const RecipeSchema = new Schema({
     type: String,
     required: true
   },
+  userName: {
+    type: String,
+    required: true
+  },
   shortText: {
     type: String,
     required: true
@@ -26,7 +30,27 @@ const RecipeSchema = new Schema({
   date: {
     type: Date,
     default: Date.now()
-  }
+  },
+  comments: [{
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'users'
+    },
+    userName: {
+      type: String,
+    },
+    text: {
+      type: String,
+      required: true
+    },
+    avatar: {
+      type: String,
+    },
+    date: {
+      type: Date,
+      default: Date.now()
+    }
+  }]
 
 });
 

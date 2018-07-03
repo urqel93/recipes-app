@@ -35,7 +35,8 @@ class RecipeForm extends Component {
       shortText: this.state.shortText,
       description: this.state.description,
       ingredients: this.state.ingredients,
-      user: user
+      user: user,
+      userName: user.name
     };
 
     this.props.addRecipe(newRecipe);

@@ -1,12 +1,15 @@
 import axios from 'axios';
 
-import {ADD_RECIPE,
+import {
+  ADD_RECIPE,
   GET_RECIPES,
   RECIPES_LOADING,
   GET_ERRORS,
   CLEAR_ERRORS,
   GET_USER_RECIPES,
-  GET_RECIPE
+  GET_RECIPE,
+  DELETE_RECIPE,
+  ADD_COMMENT_TO_RECIPE
 } from './types';
 
 export const addRecipe = recipeData => dispatch => {
@@ -78,11 +81,48 @@ export const getRecipeByHandle = handle => dispatch => {
     );
 };
 
+export const deleteRecipeById = id => dispatch => {
+  dispatch(setRecipesLoading());
+  axios
+    .delete(`/api/recipes/${id}`)
+    .then(res =>
+      dispatch({
+        type: DELETE_RECIPE,
+        payload: id
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const commentRecipe = (id, commentData) => dispatch => {
+  dispatch(clearErrors());
+  axios
+    .post(`/api/recipes/comment/${id}`, commentData)
+    .then(res =>
+      dispatch({
+        type: GET_RECIPE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 export const setRecipesLoading = () => {
   return {
     type: RECIPES_LOADING
   }
 };
+
 
 // Clear errors
 export const clearErrors = () => {

@@ -1,8 +1,16 @@
-import {GET_RECIPES, ADD_RECIPE, RECIPES_LOADING, GET_USER_RECIPES, GET_RECIPE} from "../actions/types";
+import {
+  GET_RECIPES,
+  ADD_RECIPE,
+  RECIPES_LOADING,
+  GET_USER_RECIPES,
+  GET_RECIPE,
+  DELETE_RECIPE,
+  ADD_COMMENT_TO_RECIPE
+} from "../actions/types";
 
 const initialState = {
   recipes: [],
-  recipe: [],
+  recipe: {},
   loading: false
 };
 
@@ -35,6 +43,17 @@ export default function (state = initialState, action) {
       return {
         ...state,
         recipes: [action.payload, ...state.recipes]
+      };
+    case DELETE_RECIPE:
+      return {
+        ...state,
+        recipes: state.recipes.filter(recipe => recipe._id !== action.payload),
+        loading: false
+      };
+    case ADD_COMMENT_TO_RECIPE:
+      return {
+        ...state,
+        recipes: action.payload
       };
 
 
